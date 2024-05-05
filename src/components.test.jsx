@@ -18,6 +18,12 @@ test("Verify that a user can edit markdown", () => {
     expect(textarea).toBeInTheDocument();
 });
 
+test("Verify that a section of the page is reserved to view rendered HTML", () => {
+    const {getByRole} = render(<Previewer />);
+    const html_previewer = getByRole("region", {"name": "markdown converted to HTML"});
+    expect(html_previewer).toBeInTheDocument();
+});
+
 // test("Verify that markdown is converted to HTML", () => {
 //     const main_element = document.createElement("main");
 //     const {getByRole} = render(
