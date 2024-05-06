@@ -5,4 +5,6 @@ function initialize_markdown() {
     return new Marked({breaks: true, gfm: true});
 }
 
-export {initialize_markdown};
+const markdown_converter = initialize_markdown()
+
+export {markdown_converter};
