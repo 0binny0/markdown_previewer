@@ -5,7 +5,7 @@ import {markdown_converter} from './helpers.js';
 
 const Previewer = forwardRef(function Previewer(props, ref) {
     return <>
-        <output for="editor" contentEditable="true" ref={ref} className="box"></output>
+        <output for="editor" ref={ref} className="box"></output>
     </>
 });
 
