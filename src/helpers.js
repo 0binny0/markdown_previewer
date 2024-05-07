@@ -1,10 +1,15 @@
 
-import {Marked} from "marked";
+import {Marked, marked} from "marked";
 
-function initialize_markdown() {
-    return new Marked({breaks: true, gfm: true});
+const renderer = new marked.Renderer();
+renderer.code = function(code, infostring, escaped) {
+    return `<pre><code class="codeblock">${code}</code></pre>`;
 }
 
-const markdown_converter = initialize_markdown()
+function initialize_markdown() {
+    return new Marked({breaks: true, gfm: true, renderer: renderer});
+}
+
+const markdown_converter = initialize_markdown();
 
 export {markdown_converter};
