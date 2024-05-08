@@ -16,6 +16,11 @@ test("Verify that a <code> element contains a class name to signify a code block
     expect(html).toMatch(/class="codeblock"/);
 });
 
+test("Verify that a <codespan> element contains a class name to signify an inline code block", () => {
+     const html = markdown_converter.parse("`class Object`");
+     expect(html).toMatch(/class="codeblock"/);
+});
+
 test("Verify that a user can edit markdown", () => {
     const {queryByRole} = render(<Editor />);
     const textarea = queryByRole("textbox");

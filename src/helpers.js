@@ -6,6 +6,10 @@ renderer.code = function(code, infostring, escaped) {
     return `<pre><code class="codeblock">${code}</code></pre>`;
 }
 
+renderer.codespan = function(code) {
+    return `<code class="codeblock">${code}</code>`;
+}
+
 function initialize_markdown() {
     return new Marked({breaks: true, gfm: true, renderer: renderer});
 }
