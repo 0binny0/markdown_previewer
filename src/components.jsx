@@ -1,22 +1,24 @@
 
-import {useRef, forwardRef, useEffect, useLayoutEffect} from "react";
+import {useRef, useState, forwardRef, useEffect, useLayoutEffect} from "react";
 
 import {markdown_converter} from './helpers.js';
+import {initial_markdown} from "./markdown.js";
 
 const markdown_component_windows = document.getElementsByClassName("window_wrapper");
 
-const Previewer = forwardRef(function Previewer(props, ref) {
+function Previewer(props) {
+    function render_html() {
+        return {
+            __html: markdown_converter.parse(props.markdown)
+        }
+    }
+
     return <>
-        <output for="editor" ref={ref} className="box"></output>
+        <output for="editor" className="box" dangerouslySetInnerHTML={render_html()}></output>
     </>
-});
+};
 
 const Editor = forwardRef(function Editor(props, ref) {
-
-    function handleTextareaSizeChange(e) {
-        const current_textarea_size = e.currentTarget.height;
-        const editor_window = document.getElementsByClassName("window_wrapper")[1];
-    }
 
     return <>
         <form>
@@ -37,11 +39,11 @@ function Window({children, name}) {
 }
 
 function MarkdownPreviewer() {
-
-    const html_render_ref = useRef(null);
+    const [markdown, setMarkdown] = useState(``);
     const markdown_editor_ref = useRef(null);
 
     useEffect(() => {
+        // resizes the markdown editor when the textarea is resized
         const resizer = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
                 markdown_component_windows[1].style.height = `${entry.contentRect.height + 75}px`;
@@ -50,7 +52,15 @@ function MarkdownPreviewer() {
         resizer.observe(markdown_editor_ref.current);
     }, []);
 
+    useEffect(
+        () => {
+            markdown_editor_ref.current.innerHTML = initial_markdown;
+            setMarkdown(initial_markdown);
+        }, []
+    );
+
     function resize_markdown_windows(){
+          // sets the proportional height of the html previewer and markdown editor
           const box_height = (window.innerHeight / 2) - 20;
           const box_margin = box_height - (box_height - 10);
           [...markdown_component_windows, markdown_editor_ref.current].forEach((box, i) => {
@@ -69,17 +79,15 @@ function MarkdownPreviewer() {
 
     useLayoutEffect(resize_markdown_windows, []);
 
-    useEffect(resize_markdown_windows, [])
 
     function handleMarkdownInput(e) {
-        html_render_ref.current.innerHTML = markdown_converter.parse(
-            e.currentTarget.value
-        );
+        console.log(e.currentTarget.value);
+        setMarkdown(e.currentTarget.value);
     }
 
     return <main className="main_content">
         <Window name={"Previewer"}>
-            <Previewer ref={html_render_ref} />
+            <Previewer markdown={markdown} />
         </Window>
         <Window name={"Editor"}>
             <Editor ref={markdown_editor_ref} onTyping={handleMarkdownInput} />
