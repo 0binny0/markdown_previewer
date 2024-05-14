@@ -1,4 +1,3 @@
-import './App.css'
 
 import {MarkdownPreviewer} from "./components.jsx";
 
