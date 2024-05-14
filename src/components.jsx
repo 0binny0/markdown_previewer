@@ -14,7 +14,7 @@ function Previewer(props) {
     }
 
     return <>
-        <output for="editor" className="box" dangerouslySetInnerHTML={render_html()}></output>
+        <output for="editor" className="box scroll_content" dangerouslySetInnerHTML={render_html()}></output>
     </>
 };
 
@@ -22,15 +22,15 @@ const Editor = forwardRef(function Editor(props, ref) {
 
     return <>
         <form>
-            <textarea ref={ref} id="editor" className="box" onChange={props.onTyping}></textarea>
+            <textarea ref={ref} id="editor" className="box editor_box" onChange={props.onTyping}></textarea>
         </form>
     </>
 });
 
 function Window({children, name}) {
-    return <section className="window_wrapper">
+    return <section className="window_wrapper" id="">
         <div className="heading_wrapper">
-            <h2>{name}</h2>
+            <h2 className={"window_title"}>{name}</h2>
             {/* icon widget goes here */}
         </div>
         {children}
@@ -42,16 +42,6 @@ function MarkdownPreviewer() {
     const [markdown, setMarkdown] = useState(``);
     const markdown_editor_ref = useRef(null);
 
-    useEffect(() => {
-        // resizes the markdown editor when the textarea is resized
-        const resizer = new ResizeObserver((entries) => {
-            entries.forEach((entry) => {
-                markdown_component_windows[1].style.height = `${entry.contentRect.height + 75}px`;
-            })
-        });
-        resizer.observe(markdown_editor_ref.current);
-    }, []);
-
     useEffect(
         () => {
             markdown_editor_ref.current.innerHTML = initial_markdown;
@@ -61,19 +51,18 @@ function MarkdownPreviewer() {
 
     function resize_markdown_windows(){
           // sets the proportional height of the html previewer and markdown editor
-          const box_height = (window.innerHeight / 2) - 20;
+          const box_height = (window.innerHeight / 2) - 15;
           const box_margin = box_height - (box_height - 10);
+          console.log([...markdown_component_windows, markdown_editor_ref.current]);
           [...markdown_component_windows, markdown_editor_ref.current].forEach((box, i) => {
               if (box.id === "editor") {
-                  box.style.height = `${box_height - 70}px`;
+                  box.style.height = `${box_height - 28.7}px`;
               } else {
                   box.style.height = `${box_height}px`;
               }
-
               if (i < 2) {
                   box.style.margin = `${box_margin}px auto`;
-                  box.style.border = "1px solid";
-            }
+              }
           })
         }
 
