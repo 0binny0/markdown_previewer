@@ -22,7 +22,7 @@ const Editor = forwardRef(function Editor(props, ref) {
 
     return <>
         <form>
-            <textarea ref={ref} id="editor" className="box editor_box" onChange={props.onTyping}></textarea>
+            <textarea ref={ref} id="editor" className="box editor_box" onInput={props.onTyping}></textarea>
         </form>
     </>
 });
