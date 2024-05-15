@@ -51,17 +51,15 @@ function MarkdownPreviewer() {
 
     function resize_markdown_windows(){
           // sets the proportional height of the html previewer and markdown editor
-          const box_height = (window.innerHeight / 2) - 15;
-          const box_margin = box_height - (box_height - 10);
+          const box_height = ((window.innerHeight / 2) - 22.5);
+          const box_margin = box_height - (box_height - 5);
           console.log([...markdown_component_windows, markdown_editor_ref.current]);
           [...markdown_component_windows, markdown_editor_ref.current].forEach((box, i) => {
-              if (box.id === "editor") {
-                  box.style.height = `${box_height - 28.7}px`;
-              } else {
+              if (i === 0 || i === 2) {
                   box.style.height = `${box_height}px`;
               }
               if (i < 2) {
-                  box.style.margin = `${box_margin}px auto`;
+                  box.style.margin = `${box_margin}px 0 ${box_margin} 0`;
               }
           })
         }
